@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIPS - Simple Image Processing Studio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Home Page -->
+    <div id="home-page" class="page active">
+        <div class="container">
+            <h1 class="title">Simple Image Processing Studio</h1>
+            <p class="subtitle">Pengolahan Citra Digital Berbasis Web</p>
+            
+            <div class="upload-section">
+                <input type="file" id="image-input" accept="image/*" hidden>
+                <button class="btn-primary" onclick="document.getElementById('image-input').click()">
+                    📁 Import Gambar
+                </button>
+                <p class="info-text" id="file-info">Belum ada gambar yang dipilih</p>
+            </div>
+
+            <div class="menu-grid">
+                <div class="menu-card" onclick="navigateTo('filter-page')">
+                    <div class="icon">🎨</div>
+                    <h3>Filter Dasar</h3>
+                    <p>Grayscale, Invert, Brightness</p>
+                </div>
+                <div class="menu-card" onclick="navigateTo('sobel-page')">
+                    <div class="icon">🔍</div>
+                    <h3>Sobel Edge</h3>
+                    <p>Deteksi tepi dengan Sobel</p>
+                </div>
+                <div class="menu-card" onclick="navigateTo('histogram-page')">
+                    <div class="icon">📊</div>
+                    <h3>Histogram RGB</h3>
+                    <p>Analisis distribusi warna</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter Page -->
+    <div id="filter-page" class="page">
+        <div class="container">
+            <button class="btn-back" onclick="navigateTo('home-page')">← Kembali</button>
+            <h1 class="title">Filter Dasar</h1>
+            
+            <div class="canvas-container">
+                <canvas id="filter-canvas"></canvas>
+            </div>
+
+            <div class="controls">
+                <div class="button-group">
+                    <button class="btn" onclick="applyGrayscale()">Grayscale</button>
+                    <button class="btn" onclick="applyInvert()">Invert</button>
+                    <button class="btn" onclick="resetFilter()">Reset</button>
+                    <button class="btn-primary" onclick="downloadImage('filter-canvas', 'filtered-image.png')">💾 Save</button>
+                </div>
+                
+                <div class="slider-group">
+                    <label>Brightness: <span id="brightness-value">0</span></label>
+                    <input type="range" id="brightness-slider" min="-100" max="100" value="0" oninput="applyBrightness(this.value)">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sobel Page -->
+    <div id="sobel-page" class="page">
+        <div class="container">
+            <button class="btn-back" onclick="navigateTo('home-page')">← Kembali</button>
+            <h1 class="title">Sobel Edge Detection</h1>
+            
+            <div class="canvas-container">
+                <canvas id="sobel-canvas"></canvas>
+            </div>
+
+            <div class="controls">
+                <div class="button-group">
+                    <button class="btn-primary" onclick="applySobel()">🔍 Deteksi Tepi</button>
+                    <button class="btn" onclick="resetSobel()">Reset</button>
+                    <button class="btn-primary" onclick="downloadImage('sobel-canvas', 'sobel-edge.png')">💾 Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Histogram Page -->
+    <div id="histogram-page" class="page">
+        <div class="container">
+            <button class="btn-back" onclick="navigateTo('home-page')">← Kembali</button>
+            <h1 class="title">Histogram RGB</h1>
+            
+            <div class="canvas-container">
+                <canvas id="histogram-source-canvas"></canvas>
+            </div>
+
+            <div class="histogram-container">
+                <canvas id="histogram-canvas"></canvas>
+            </div>
+
+            <div class="controls">
+                <div class="button-group">
+                    <button class="btn-primary" onclick="calculateHistogram()">📊 Hitung Histogram</button>
+                    <button class="btn" onclick="resetHistogram()">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="image_loader.js"></script>
+    <script src="filter_service.js"></script>
+    <script src="sobel_service.js"></script>
+    <script src="histogram_calculator.js"></script>
+    <script src="home_page.js"></script>
+    <script src="filter_page.js"></script>
+    <script src="sobel_page.js"></script>
+    <script src="histogram_page.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
