@@ -4,13 +4,19 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #334155 50%, #475569 75%, #64748b 100%);
+    background-attachment: fixed;
     min-height: 100vh;
     padding: 20px;
     position: relative;
     overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
 }
 
 body::before {
@@ -26,6 +32,7 @@ body::before {
         radial-gradient(circle at 40% 80%, rgba(236, 72, 153, 0.1) 0%, transparent 40%);
     pointer-events: none;
     z-index: 0;
+    will-change: opacity;
     animation: pulse 15s ease-in-out infinite;
 }
 
@@ -47,6 +54,7 @@ body::after {
     background-size: 50px 50px;
     pointer-events: none;
     z-index: 0;
+    will-change: transform;
 }
 
 .container {
@@ -85,6 +93,7 @@ body::after {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    will-change: filter;
     animation: shimmer 3s ease-in-out infinite;
 }
 
@@ -131,6 +140,7 @@ body::after {
         rgba(59, 130, 246, 0.1),
         transparent
     );
+    will-change: transform;
     animation: rotate 8s linear infinite;
 }
 
@@ -169,6 +179,8 @@ body::after {
     position: relative;
     overflow: hidden;
     backdrop-filter: blur(20px);
+    transform: translateZ(0);
+    will-change: transform;
 }
 
 .menu-card::before {
@@ -185,6 +197,7 @@ body::after {
         transparent
     );
     transition: left 0.7s ease;
+    will-change: left;
 }
 
 .menu-card:hover::before {
@@ -546,6 +559,7 @@ input[type="range"]::-moz-range-track {
     position: relative;
     overflow: hidden;
     box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.3);
+    transform: translateZ(0);
 }
 
 .footer::before {
@@ -562,6 +576,7 @@ input[type="range"]::-moz-range-track {
         rgba(236, 72, 153, 0.5),
         transparent
     );
+    will-change: opacity;
     animation: shimmerLine 3s ease-in-out infinite;
 }
 
@@ -753,5 +768,38 @@ input[type="range"]::-moz-range-track {
     .slider-group label {
         font-size: 1.2em;
         margin-bottom: 15px;
+    }
+
+    /* Reduce animations on mobile for better performance */
+    body::before {
+        animation: none;
+        opacity: 0.9;
+    }
+
+    .upload-section::before {
+        animation: none;
+    }
+
+    .title {
+        animation: none;
+        filter: brightness(1);
+    }
+
+    .menu-card {
+        transition: all 0.3s ease;
+    }
+
+    .menu-card .icon {
+        transition: transform 0.3s ease;
+    }
+
+    /* Optimize backdrop blur on mobile */
+    .upload-section,
+    .menu-card,
+    .canvas-container,
+    .controls,
+    .histogram-container,
+    .footer {
+        backdrop-filter: blur(10px);
     }
 }
