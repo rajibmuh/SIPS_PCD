@@ -25,63 +25,132 @@ function computeHistogram(imageData) {
     return histogram;
 }
 
-// Draw histogram on canvas
+// Draw histogram on canvas with separated channels
 function drawHistogram(histogram) {
     const canvas = document.getElementById('histogram-canvas');
     const ctx = canvas.getContext('2d');
     
-    // Set canvas size
-    canvas.width = 768;
-    canvas.height = 300;
+    // Set canvas size - taller for 3 separate charts
+    canvas.width = 900;
+    canvas.height = 800;
     
-    // Clear canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Clear canvas with light background
+    ctx.fillStyle = '#f5f5f5';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
     
-    // Find max value for scaling
+    // Find max values for each channel
     const maxRed = Math.max(...histogram.red);
     const maxGreen = Math.max(...histogram.green);
     const maxBlue = Math.max(...histogram.blue);
-    const maxValue = Math.max(maxRed, maxGreen, maxBlue);
     
-    const barWidth = canvas.width / 256;
-    const heightScale = (canvas.height - 40) / maxValue;
+    // Draw each channel separately
+    const chartHeight = 220;
+    const chartWidth = 800;
+    const marginLeft = 50;
+    const marginTop = 30;
+    const spacing = 30;
     
-    // Draw grid
-    ctx.strokeStyle = '#e0e0e0';
-    ctx.lineWidth = 1;
-    for (let i = 0; i <= 10; i++) {
-        const y = (canvas.height - 20) * (i / 10) + 10;
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(canvas.width, y);
-        ctx.stroke();
-    }
+    // Red Channel
+    drawSingleChannelHistogram(ctx, histogram.red, 'Red Channel', 'rgba(255, 82, 82, 1)', 
+        marginLeft, marginTop, chartWidth, chartHeight, maxRed);
     
-    // Draw histograms with transparency
-    drawChannel(ctx, histogram.red, 'rgba(255, 0, 0, 0.5)', barWidth, heightScale);
-    drawChannel(ctx, histogram.green, 'rgba(0, 255, 0, 0.5)', barWidth, heightScale);
-    drawChannel(ctx, histogram.blue, 'rgba(0, 0, 255, 0.5)', barWidth, heightScale);
+    // Green Channel
+    drawSingleChannelHistogram(ctx, histogram.green, 'Green Channel', 'rgba(76, 175, 80, 1)', 
+        marginLeft, marginTop + chartHeight + spacing, chartWidth, chartHeight, maxGreen);
     
-    // Draw legend
-    ctx.font = '14px Arial';
-    ctx.fillStyle = 'red';
-    ctx.fillText('● Red', 10, canvas.height - 5);
-    ctx.fillStyle = 'green';
-    ctx.fillText('● Green', 80, canvas.height - 5);
-    ctx.fillStyle = 'blue';
-    ctx.fillText('● Blue', 160, canvas.height - 5);
+    // Blue Channel
+    drawSingleChannelHistogram(ctx, histogram.blue, 'Blue Channel', 'rgba(33, 150, 243, 1)', 
+        marginLeft, marginTop + (chartHeight + spacing) * 2, chartWidth, chartHeight, maxBlue);
 }
 
 // Draw single channel histogram
-function drawChannel(ctx, data, color, barWidth, heightScale) {
+function drawSingleChannelHistogram(ctx, data, title, color, x, y, width, height, maxValue) {
+    ctx.save();
+    ctx.translate(x, y);
+    
+    // Draw background card
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(-10, -10, width + 20, height + 40);
+    ctx.strokeStyle = '#e0e0e0';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(-10, -10, width + 20, height + 40);
+    
+    // Draw title
     ctx.fillStyle = color;
+    ctx.font = 'bold 18px Arial';
+    ctx.textAlign = 'left';
+    ctx.fillText(title, 5, -25);
+    
+    // Draw max value
+    ctx.fillStyle = '#666';
+    ctx.font = '14px Arial';
+    ctx.textAlign = 'right';
+    ctx.fillText('Max: ' + maxValue.toLocaleString('id-ID'), width - 5, -25);
+    
+    // Calculate scaling
+    const barWidth = width / 256;
+    const heightScale = (height - 30) / maxValue;
+    
+    // Draw histogram area with gradient
+    const gradient = ctx.createLinearGradient(0, 0, 0, height - 30);
+    gradient.addColorStop(0, color);
+    gradient.addColorStop(1, color.replace('1)', '0.3)'));
+    
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.moveTo(0, height - 30);
     
     for (let i = 0; i < 256; i++) {
         const value = data[i];
         const barHeight = value * heightScale;
-        const x = i * barWidth;
-        const y = ctx.canvas.height - 20 - barHeight;
+        const xPos = i * barWidth;
+        const yPos = height - 30 - barHeight;
         
-        ctx.fillRect(x, y, barWidth, barHeight);
+        if (i === 0) {
+            ctx.lineTo(xPos, yPos);
+        } else {
+            ctx.lineTo(xPos, yPos);
+        }
     }
+    
+    ctx.lineTo(width, height - 30);
+    ctx.closePath();
+    ctx.fill();
+    
+    // Draw outline
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(0, height - 30);
+    
+    for (let i = 0; i < 256; i++) {
+        const value = data[i];
+        const barHeight = value * heightScale;
+        const xPos = i * barWidth;
+        const yPos = height - 30 - barHeight;
+        ctx.lineTo(xPos, yPos);
+    }
+    
+    ctx.stroke();
+    
+    // Draw X-axis
+    ctx.strokeStyle = '#333';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(0, height - 30);
+    ctx.lineTo(width, height - 30);
+    ctx.stroke();
+    
+    // Draw X-axis labels
+    ctx.fillStyle = '#666';
+    ctx.font = '12px Arial';
+    ctx.textAlign = 'center';
+    
+    const xLabels = [0, 128, 255];
+    xLabels.forEach(label => {
+        const xPos = (label / 255) * width;
+        ctx.fillText(label, xPos, height - 10);
+    });
+    
+    ctx.restore();
 }

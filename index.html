@@ -102,6 +102,20 @@
             </div>
 
             <div class="controls">
+                <div class="mode-selector">
+                    <label>📊 Mode Histogram:</label>
+                    <div>
+                        <label>
+                            <input type="radio" name="histogram-mode" value="overlay" checked>
+                            <span>Overlay (Gabungan)</span>
+                        </label>
+                        <label>
+                            <input type="radio" name="histogram-mode" value="separated">
+                            <span>Separated (Terpisah)</span>
+                        </label>
+                    </div>
+                </div>
+                
                 <div class="button-group">
                     <button class="btn-primary" onclick="calculateHistogram()">📊 Hitung Histogram</button>
                     <button class="btn" onclick="resetHistogram()">Reset</button>
@@ -109,6 +123,45 @@
             </div>
         </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>🎨 SIPS</h3>
+                <p>Simple Image Processing Studio</p>
+                <p class="footer-tagline">Powerful tools for digital image manipulation</p>
+            </div>
+            <div class="footer-section">
+                <h4>Features</h4>
+                <ul>
+                    <li>Basic Filters</li>
+                    <li>Edge Detection</li>
+                    <li>RGB Histogram</li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Technology</h4>
+                <ul>
+                    <li>HTML5 Canvas</li>
+                    <li>JavaScript</li>
+                    <li>CSS</li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Connect</h4>
+                <div class="social-links">
+                    <a href="#" class="social-icon">📧</a>
+                    <a href="#" class="social-icon">💼</a>
+                    <a href="#" class="social-icon">🐙</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 SIPS - Simple Image Processing Studio. All rights reserved.</p>
+            <p class="footer-credits">Made with for Pengolahan Citra Digital</p>
+        </div>
+    </footer>
 
     <script src="image_loader.js"></script>
     <script src="filter_service.js"></script>
