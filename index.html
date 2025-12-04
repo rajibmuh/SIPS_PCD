@@ -25,7 +25,7 @@
                 <div class="menu-card" onclick="navigateTo('filter-page')">
                     <div class="icon">🎨</div>
                     <h3>Filter Dasar</h3>
-                    <p>Grayscale, Invert, Brightness</p>
+                    <p>Grayscale, Invert, Sepia, Brightness</p>
                 </div>
                 <div class="menu-card" onclick="navigateTo('sobel-page')">
                     <div class="icon">🔍</div>
@@ -55,6 +55,7 @@
                 <div class="button-group">
                     <button class="btn" onclick="applyGrayscale()">Grayscale</button>
                     <button class="btn" onclick="applyInvert()">Invert</button>
+                    <button class="btn" onclick="applySepia()">Sepia</button>
                     <button class="btn" onclick="resetFilter()">Reset</button>
                     <button class="btn-primary" onclick="downloadImage('filter-canvas', 'filtered-image.png')">💾 Save</button>
                 </div>
@@ -130,47 +131,44 @@
             <div class="footer-section">
                 <h3>🎨 SIPS</h3>
                 <p>Simple Image Processing Studio</p>
-                <p class="footer-tagline">Powerful tools for digital image manipulation</p>
+                <p class="footer-tagline">Sistem Pengolahan Citra Digital</p>
             </div>
             <div class="footer-section">
-                <h4>Features</h4>
+                <h4>Fitur</h4>
                 <ul>
-                    <li>Basic Filters</li>
-                    <li>Edge Detection</li>
-                    <li>RGB Histogram</li>
+                    <li>Filter Dasar (Grayscale, Invert, Sepia)</li>
+                    <li>Brightness Adjustment</li>
+                    <li>Sobel Edge Detection</li>
+                    <li>RGB Histogram Analysis</li>
                 </ul>
             </div>
             <div class="footer-section">
-                <h4>Technology</h4>
+                <h4>Teknologi</h4>
                 <ul>
                     <li>HTML5 Canvas</li>
-                    <li>JavaScript</li>
-                    <li>CSS</li>
+                    <li>JavaScript ES6+</li>
+                    <li>CSS3 Modern</li>
+                    <li>Web Image Processing</li>
                 </ul>
             </div>
             <div class="footer-section">
-                <h4>Connect</h4>
+                <h4>Tim Pengembang</h4>
+                <p>Kelompok Pengolahan Citra</p>
                 <div class="social-links">
-                    <a href="#" class="social-icon">📧</a>
-                    <a href="#" class="social-icon">💼</a>
-                    <a href="#" class="social-icon">🐙</a>
+                    <a href="#" class="social-icon">👨‍💻</a>
+                    <a href="#" class="social-icon">👩‍💻</a>
+                    <a href="#" class="social-icon">🧑‍💻</a>
+                    <a href="#" class="social-icon">👨‍🎓</a>
+                    <a href="#" class="social-icon">👩‍🎓</a>
                 </div>
             </div>
         </div>
         <div class="footer-bottom">
             <p>&copy; 2025 SIPS - Simple Image Processing Studio. All rights reserved.</p>
-            <p class="footer-credits">Made with for Pengolahan Citra Digital</p>
+            <p class="footer-credits">Dibuat dengan ❤️ untuk mata kuliah Pengolahan Citra Digital</p>
         </div>
     </footer>
 
-    <script src="image_loader.js"></script>
-    <script src="filter_service.js"></script>
-    <script src="sobel_service.js"></script>
-    <script src="histogram_calculator.js"></script>
-    <script src="home_page.js"></script>
-    <script src="filter_page.js"></script>
-    <script src="sobel_page.js"></script>
-    <script src="histogram_page.js"></script>
     <script src="main.js"></script>
 </body>
 </html>
