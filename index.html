@@ -7,33 +7,40 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Home Page -->
     <div id="home-page" class="page active">
         <div class="container">
             <h1 class="title">Simple Image Processing Studio</h1>
             <p class="subtitle">Pengolahan Citra Digital Berbasis Web</p>
             
             <div class="upload-section">
-                <input type="file" id="image-input" accept="image/*" hidden>
                 <button class="btn-primary" onclick="document.getElementById('image-input').click()">
-                    📁 Import Gambar
+                    Upload Gambar
                 </button>
-                <p class="info-text" id="file-info">Belum ada gambar yang dipilih</p>
+                <input type="file" id="image-input" accept="image/*" style="display: none;">
+                <p class="info-text" id="file-info">Pilih gambar untuk memulai</p>
             </div>
 
             <div class="menu-grid">
-                <div class="menu-card" onclick="navigateTo('filter-page')">
-                    <div class="icon">🎨</div>
+                <div class="menu-card" onclick="goToPage('rotation')">
+                    <div class="icon">↻</div>
+                    <h3>Rotasi & Flip</h3>
+                    <p>Rotasi 90°, 180°, Flip Horizontal/Vertikal</p>
+                </div>
+                
+                <div class="menu-card" onclick="goToPage('filter')">
+                    <div class="icon">◑</div>
                     <h3>Filter Dasar</h3>
                     <p>Grayscale, Invert, Sepia, Brightness</p>
                 </div>
-                <div class="menu-card" onclick="navigateTo('sobel-page')">
-                    <div class="icon">🔍</div>
+                
+                <div class="menu-card" onclick="goToPage('sobel')">
+                    <div class="icon">⧄</div>
                     <h3>Sobel Edge</h3>
                     <p>Deteksi tepi dengan Sobel</p>
                 </div>
-                <div class="menu-card" onclick="navigateTo('histogram-page')">
-                    <div class="icon">📊</div>
+                
+                <div class="menu-card" onclick="goToPage('histogram')">
+                    <div class="icon">▭</div>
                     <h3>Histogram RGB</h3>
                     <p>Analisis distribusi warna</p>
                 </div>
@@ -41,10 +48,32 @@
         </div>
     </div>
 
-    <!-- Filter Page -->
+    <div id="rotation-page" class="page">
+        <div class="container">
+            <button class="btn-back" onclick="goToPage('home')">← Kembali</button>
+            <h1 class="title">Rotasi & Flip</h1>
+            
+            <div class="canvas-container">
+                <canvas id="rotation-canvas"></canvas>
+            </div>
+
+            <div class="controls">
+                <div class="button-group">
+                    <button class="btn" onclick="Rotation.rotate90Left()">↺ 90° Kiri</button>
+                    <button class="btn" onclick="Rotation.rotate90Right()">↻ 90° Kanan</button>
+                    <button class="btn" onclick="Rotation.rotate180()">180°</button>
+                    <button class="btn" onclick="Rotation.flipHorizontal()">Flip H</button>
+                    <button class="btn" onclick="Rotation.flipVertical()">Flip V</button>
+                    <button class="btn" onclick="Rotation.reset()">Reset</button>
+                    <button class="btn" onclick="saveImage('rotation-canvas', 'rotated.png')">Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="filter-page" class="page">
         <div class="container">
-            <button class="btn-back" onclick="navigateTo('home-page')">← Kembali</button>
+            <button class="btn-back" onclick="goToPage('home')">← Kembali</button>
             <h1 class="title">Filter Dasar</h1>
             
             <div class="canvas-container">
@@ -53,25 +82,24 @@
 
             <div class="controls">
                 <div class="button-group">
-                    <button class="btn" onclick="applyGrayscale()">Grayscale</button>
-                    <button class="btn" onclick="applyInvert()">Invert</button>
-                    <button class="btn" onclick="applySepia()">Sepia</button>
-                    <button class="btn" onclick="resetFilter()">Reset</button>
-                    <button class="btn-primary" onclick="downloadImage('filter-canvas', 'filtered-image.png')">💾 Save</button>
+                    <button class="btn" onclick="Filters.applyGrayscale()">Grayscale</button>
+                    <button class="btn" onclick="Filters.applyInvert()">Invert</button>
+                    <button class="btn" onclick="Filters.applySepia()">Sepia</button>
+                    <button class="btn" onclick="Filters.reset()">Reset</button>
+                    <button class="btn" onclick="saveImage('filter-canvas', 'filtered.png')">Simpan</button>
                 </div>
                 
                 <div class="slider-group">
                     <label>Brightness: <span id="brightness-value">0</span></label>
-                    <input type="range" id="brightness-slider" min="-100" max="100" value="0" oninput="applyBrightness(this.value)">
+                    <input type="range" id="brightness-slider" min="-100" max="100" value="0">
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Sobel Page -->
     <div id="sobel-page" class="page">
         <div class="container">
-            <button class="btn-back" onclick="navigateTo('home-page')">← Kembali</button>
+            <button class="btn-back" onclick="goToPage('home')">← Kembali</button>
             <h1 class="title">Sobel Edge Detection</h1>
             
             <div class="canvas-container">
@@ -80,18 +108,17 @@
 
             <div class="controls">
                 <div class="button-group">
-                    <button class="btn-primary" onclick="applySobel()">🔍 Deteksi Tepi</button>
-                    <button class="btn" onclick="resetSobel()">Reset</button>
-                    <button class="btn-primary" onclick="downloadImage('sobel-canvas', 'sobel-edge.png')">💾 Save</button>
+                    <button class="btn" onclick="Sobel.apply()">Deteksi Tepi</button>
+                    <button class="btn" onclick="Sobel.reset()">Reset</button>
+                    <button class="btn" onclick="saveImage('sobel-canvas', 'sobel.png')">Simpan</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Histogram Page -->
     <div id="histogram-page" class="page">
         <div class="container">
-            <button class="btn-back" onclick="navigateTo('home-page')">← Kembali</button>
+            <button class="btn-back" onclick="goToPage('home')">← Kembali</button>
             <h1 class="title">Histogram RGB</h1>
             
             <div class="canvas-container">
@@ -104,71 +131,41 @@
 
             <div class="controls">
                 <div class="mode-selector">
-                    <label>📊 Mode Histogram:</label>
+                    <label>Mode Histogram:</label>
                     <div>
                         <label>
-                            <input type="radio" name="histogram-mode" value="overlay" checked>
+                            <input type="radio" name="histogram-mode" value="overlay" checked onclick="updateHistogram()">
                             <span>Overlay (Gabungan)</span>
                         </label>
                         <label>
-                            <input type="radio" name="histogram-mode" value="separated">
+                            <input type="radio" name="histogram-mode" value="separated" onclick="updateHistogram()">
                             <span>Separated (Terpisah)</span>
                         </label>
                     </div>
                 </div>
                 
                 <div class="button-group">
-                    <button class="btn-primary" onclick="calculateHistogram()">📊 Hitung Histogram</button>
-                    <button class="btn" onclick="resetHistogram()">Reset</button>
+                    <button class="btn" onclick="Histogram.calculate()">Hitung Histogram</button>
+                    <button class="btn" onclick="Histogram.reset()">Reset</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-section">
-                <h3>🎨 SIPS</h3>
+                <h3>SIPS</h3>
                 <p>Simple Image Processing Studio</p>
-                <p class="footer-tagline">Sistem Pengolahan Citra Digital</p>
+                <p>Pengolahan Citra Digital</p>
             </div>
-            <div class="footer-section">
-                <h4>Fitur</h4>
-                <ul>
-                    <li>Filter Dasar (Grayscale, Invert, Sepia)</li>
-                    <li>Brightness Adjustment</li>
-                    <li>Sobel Edge Detection</li>
-                    <li>RGB Histogram Analysis</li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h4>Teknologi</h4>
-                <ul>
-                    <li>HTML5 Canvas</li>
-                    <li>JavaScript ES6+</li>
-                    <li>CSS3 Modern</li>
-                    <li>Web Image Processing</li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h4>Tim Pengembang</h4>
-                <p>Kelompok Pengolahan Citra</p>
-                <div class="social-links">
-                    <a href="#" class="social-icon">👨‍💻</a>
-                    <a href="#" class="social-icon">👩‍💻</a>
-                    <a href="#" class="social-icon">🧑‍💻</a>
-                    <a href="#" class="social-icon">👨‍🎓</a>
-                    <a href="#" class="social-icon">👩‍🎓</a>
-                </div>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2025 SIPS - Simple Image Processing Studio. All rights reserved.</p>
-            <p class="footer-credits">Dibuat dengan ❤️ untuk mata kuliah Pengolahan Citra Digital</p>
         </div>
     </footer>
 
     <script src="main.js"></script>
+    <script src="rotation.js"></script>
+    <script src="filters.js"></script>
+    <script src="sobel.js"></script>
+    <script src="histogram.js"></script>
 </body>
 </html>

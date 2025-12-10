@@ -803,3 +803,58 @@ input[type="range"]::-moz-range-track {
         backdrop-filter: blur(10px);
     }
 }
+
+.button-group .btn {
+    min-width: 120px;
+    margin: 5px;
+}
+
+/* Tambahan untuk upload button */
+.btn-primary {
+    background: linear-gradient(135deg, #2563eb 0%, #3b82f6 25%, #8b5cf6 75%, #a855f7 100%);
+    color: white;
+    border: none;
+    padding: 16px 35px;
+    font-size: 1.1em;
+    font-weight: 600;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 
+        0 12px 35px rgba(59, 130, 246, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.1) inset,
+        0 0 20px rgba(139, 92, 246, 0.3);
+    position: relative;
+    overflow: hidden;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 
+        0 18px 50px rgba(59, 130, 246, 0.5),
+        0 0 30px rgba(139, 92, 246, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .button-group .btn {
+        min-width: 100px;
+        font-size: 0.9em;
+        padding: 10px 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .button-group {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .button-group .btn {
+        width: 90%;
+        margin: 5px 0;
+    }
+}
